@@ -15,21 +15,21 @@ main = runSimpleApp $ do
     rulesMap :: Map (Char,Char) [(Char,Char)]
     rulesMap = M.fromList $ map (\((left,right),middle) -> ((left,right),[(left,middle),(middle,right)])) rules
 
-    transform :: ((Char,Char),Integer) -> [((Char,Char),Integer)]
-    transform (pair,count) = rulesMap M.!? pair & maybe [(pair,count)] ( map (\pair -> (pair,count)) )
-
     initial :: Map (Char,Char) Integer
     initial = M.fromListWith (+) $ zipWith (,) (zipWith (,) (seed:seeds) seeds) (repeat 1)
 
+    pairStep :: ((Char,Char),Integer) -> [((Char,Char),Integer)]
+    pairStep (pair,count) = rulesMap M.!? pair & maybe [(pair,count)] ( map (\pair -> (pair,count)) )
+
     systemStep :: Map (Char,Char) Integer -> Map (Char,Char) Integer
-    systemStep = M.fromListWith (+) . foldMap transform . M.toList
+    systemStep = M.fromListWith (+) . foldMap pairStep . M.toList
 
     final :: Map (Char,Char) Integer
-    final = appEndo (mconcat $ replicate 40 (Endo systemStep)) initial
+    final =  (appEndo . foldMap Endo) (replicate 40 systemStep) initial
 
     counts :: Map Char Integer
-    counts = M.toList final & map (\((_,right),count) -> (right,count))  -- Each letter occurs it two pairs
-                            & ((seed,1):)                                -- Except the first and last one
+    counts = M.toList final & map (\((_,right),count) -> (right,count))  -- Each letter occurs on a right
+                            & ((seed,1):)                                -- except the first left
                             & M.fromListWith (+)
 
     max :: Integer
