@@ -92,3 +92,10 @@ executable 4A
 executable 4B
   import:              default
   main-is:             4B.hs
+
+executable 14A
+  import:              default
+  main-is:             14A.hs
+executable 14B
+  import:              default
+  main-is:             14A.hs
