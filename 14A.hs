@@ -22,7 +22,7 @@ main = runSimpleApp $ do
     pairStep (pair,count) = rulesMap M.!? pair & maybe [(pair,count)] ( map (\pair -> (pair,count)) )
 
     systemStep :: Map (Char,Char) Integer -> Map (Char,Char) Integer
-    systemStep = M.fromListWith (+) . foldMap transform . M.toList
+    systemStep = M.fromListWith (+) . foldMap pairStep . M.toList
 
     final :: Map (Char,Char) Integer
     final = appEndo (mconcat $ replicate 10 (Endo systemStep)) initial

@@ -99,3 +99,10 @@ executable 14A
 executable 14B
   import:              default
   main-is:             14A.hs
+
+executable 18A
+  import:              default
+  main-is:             18A.hs
+executable 18B
+  import:              default
+  main-is:             18B.hs
