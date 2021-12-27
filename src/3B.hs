@@ -1,9 +1,12 @@
+import AOC
+import qualified Data.Attoparsec.Text as P
+
 import RIO.List.Partial ((!!))
 
 main = runSimpleApp $ do
   input <- readFileUtf8 "3.txt"
-  let Right digits = let binary = skipSpace *> some (False <$ char '0' <|> True <$ char '1')
-                     in parseOnly ( many binary <* skipSpace <* endOfInput ) input
+  let Right digits = let binary = P.skipSpace *> some (False <$ P.char '0' <|> True <$ P.char '1')
+                     in P.parseOnly ( many binary <* P.skipSpace <* P.endOfInput ) input
       reduce _      [result] _     = result
       reduce choice options  depth =
         let options1 = filter (!! depth) options

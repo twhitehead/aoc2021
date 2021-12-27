@@ -1,4 +1,4 @@
-module Prelude
+module AOC
   ( module RIO
   , module RIO.List
   , module Lens.Micro

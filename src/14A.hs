@@ -1,3 +1,4 @@
+import AOC
 import qualified RIO.Map as M
 import qualified Data.Attoparsec.Text as P
 
@@ -25,7 +26,7 @@ main = runSimpleApp $ do
     systemStep = M.fromListWith (+) . foldMap pairStep . M.toList
 
     final :: Map (Char,Char) Integer
-    final =  (appEndo . foldMap Endo) (replicate 40 systemStep) initial
+    final = appEndo (mconcat $ replicate 10 (Endo systemStep)) initial
 
     counts :: Map Char Integer
     counts = M.toList final & map (\((_,right),count) -> (right,count))  -- Each letter occurs on a right
